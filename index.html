@@ -3,352 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechLearn — Recursos para aprender tecnología</title>
-  <meta name="description" content="TechLearn: cursos y recursos gratuitos para aprender tecnología con proyectos reales. Sitio educativo para práctica de análisis de rendimiento web (IIC).">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-
   <!-- ============================================================
-       LABORATORIO DE RENDIMIENTO WEB — Sesión 6 (IIC)
-       Este sitio contiene 7 problemas de rendimiento INTENCIONALES
-       para que los estudiantes los detecten con Chrome DevTools y
-       Lighthouse. Ver DOCENTE.md y docs/solucion-docente.md.
+       Cambia este título por tu nombre.
+       Ejemplo: "Mi primera página - Juan Pérez"
        ============================================================ -->
-
-  <!-- PROBLEMA 7: @import de Google Fonts en el <head> — bloquea el render -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-  </style>
-
-  <!-- PROBLEMA 7 (variante): precarga de fuentes que NO se usan en el sitio -->
-  <link rel="preload" href="assets/fonts/opensans-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/montserrat-bold.woff2" as="font" type="font/woff2" crossorigin>
-
-  <!-- PROBLEMA 5: CSS no optimizado, sin minificar, con selectores no usados -->
+  <title>Mi primera página — Sesión 6 IIC</title>
+  <meta name="description" content="Plantilla base para el laboratorio de publicación con GitHub Pages.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/styles.css">
-
-  <!-- PROBLEMA 2 y 3: JavaScript bloqueante en el <head>, SIN defer/async,
-       y sin concatenar con los demás bundles -->
-  <script src="assets/js/app.js"></script>
-  <script src="assets/js/analytics.js"></script>
 </head>
 <body>
-
   <header class="site-header">
     <div class="container header-inner">
       <a href="#inicio" class="logo-link">
-        <img src="assets/img/logo.svg" alt="TechLearn">
+        <span style="color: white; font-weight: 700; font-size: 1.25rem;">Mi Página</span>
       </a>
-
       <nav class="main-nav" aria-label="Navegación principal">
         <ul>
           <li><a href="#inicio">Inicio</a></li>
-          <li><a href="#cursos">Cursos</a></li>
-          <li><a href="#recursos">Recursos</a></li>
-          <li><a href="#comunidad">Comunidad</a></li>
-          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+          <li><a href="#gustos">Gustos</a></li>
         </ul>
       </nav>
-
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     </div>
   </header>
 
   <main id="inicio">
-    <!-- HERO — hero-bg.jpg es normalmente el LCP element de esta página (PROBLEMA 1) -->
+    <!-- ============================================================
+         CAMBIA ESTE TÍTULO PRINCIPAL por algo que te identifique.
+         Ejemplo: "Hola, soy Juan Pérez"
+         ============================================================ -->
     <section class="hero">
       <div class="container hero-content">
-        <h1>Aprende tecnología con proyectos reales</h1>
-        <p>Cursos prácticos de programación, datos y diseño digital pensados para estudiantes del IIC que quieren construir un portafolio real, no solo ver teoría.</p>
-        <a href="#cursos" class="btn btn-primary">Explorar cursos</a>
+        <h1>Hola, soy [TU NOMBRE AQUÍ]</h1>
+        <p>Esta es mi primera página web publicada en internet. La hice en la Sesión 6 de Administración de Sitios Web del IIC.</p>
       </div>
     </section>
 
-    <!-- Segunda imagen pesada, usada como banner decorativo -->
-    <!-- PROBLEMA 4: sin width/height -> Cumulative Layout Shift -->
-    <img src="assets/img/hero-bg-2.jpg" alt="Estudiantes aprendiendo tecnología" class="legacy-utility-full-width">
-
-    <!-- CURSOS DESTACADOS -->
-    <section class="section" id="cursos">
+    <!-- ============================================================
+         CAMBIA EL CONTENIDO DE "Sobre mí" con información real sobre ti.
+         Reemplaza los textos entre <p>...</p> con tus datos.
+         ============================================================ -->
+    <section class="section" id="sobre-mi">
       <div class="container">
-        <div class="section-header">
-          <h2>Cursos destacados</h2>
-          <p>Elige entre nuestras rutas más populares y empieza a construir proyectos desde la primera semana.</p>
-        </div>
-
-        <div class="courses-grid">
-          <!-- PROBLEMA 1 + 4 + 6: imágenes pesadas, sin width/height, sin srcset -->
-          <article class="course-card">
-            <img src="assets/img/course-1.jpg" alt="Curso de Desarrollo Web Frontend">
-            <div class="course-card-body">
-              <span class="course-tag">Frontend</span>
-              <h3>Desarrollo Web Frontend</h3>
-              <p class="desc">Aprende HTML, CSS y JavaScript construyendo interfaces reales paso a paso.</p>
-              <div class="course-footer">
-                <span class="price"><span class="old">S/199</span> S/99</span>
-                <a href="#" class="btn btn-outline">Ver curso</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="course-card">
-            <img src="assets/img/course-2.jpg" alt="Curso de Python para Principiantes">
-            <div class="course-card-body">
-              <span class="course-tag">Backend</span>
-              <h3>Python para Principiantes</h3>
-              <p class="desc">Domina la lógica de programación con Python desde cero, sin experiencia previa.</p>
-              <div class="course-footer">
-                <span class="price">S/79</span>
-                <a href="#" class="btn btn-outline">Ver curso</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="course-card">
-            <img src="assets/img/course-3.jpg" alt="Curso de Bases de Datos">
-            <div class="course-card-body">
-              <span class="course-tag">Datos</span>
-              <h3>Bases de Datos y SQL</h3>
-              <p class="desc">Diseña y consulta bases de datos relacionales usando casos prácticos.</p>
-              <div class="course-footer">
-                <span class="price">S/89</span>
-                <a href="#" class="btn btn-outline">Ver curso</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="course-card">
-            <img src="assets/img/course-4.jpg" alt="Curso de Diseño UX/UI">
-            <div class="course-card-body">
-              <span class="course-tag">Diseño</span>
-              <h3>Fundamentos de UX/UI</h3>
-              <p class="desc">Crea interfaces centradas en el usuario con herramientas de diseño modernas.</p>
-              <div class="course-footer">
-                <span class="price"><span class="old">S/149</span> S/119</span>
-                <a href="#" class="btn btn-outline">Ver curso</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="course-card">
-            <img src="assets/img/course-5.jpg" alt="Curso de Ciberseguridad Básica">
-            <div class="course-card-body">
-              <span class="course-tag">Seguridad</span>
-              <h3>Ciberseguridad Básica</h3>
-              <p class="desc">Comprende los fundamentos de seguridad web y buenas prácticas esenciales.</p>
-              <div class="course-footer">
-                <span class="price">S/129</span>
-                <a href="#" class="btn btn-outline">Ver curso</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="course-card">
-            <img src="assets/img/course-6.jpg" alt="Curso de Rendimiento Web">
-            <div class="course-card-body">
-              <span class="course-tag">Performance</span>
-              <h3>Rendimiento Web con DevTools</h3>
-              <p class="desc">Aprende a medir y optimizar LCP, INP y CLS en sitios web reales (¡como este!).</p>
-              <div class="course-footer">
-                <span class="price">S/99</span>
-                <a href="#" class="btn btn-outline">Ver curso</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- POR QUÉ TECHLEARN -->
-    <section class="section section-alt">
-      <div class="container">
-        <div class="section-header">
-          <h2>Por qué TechLearn</h2>
-          <p>Formación práctica, cercana y pensada para estudiantes del IIC en Huánuco.</p>
-        </div>
-
-        <div class="benefits-grid">
-          <div class="benefit-card">
-            <div class="benefit-icon">💻</div>
-            <h3>Proyectos reales</h3>
-            <p>Cada curso termina con un proyecto que puedes mostrar en tu portafolio.</p>
+        <h2>Sobre mí</h2>
+        <div class="sobre-mi-grid">
+          <div class="card">
+            <h3>Estudio</h3>
+            <!-- Cambia esto con tu carrera/sección/turno: -->
+            <p>Administración de Sitios Web · Instituto Isabel La Católica · Huánuco</p>
           </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">🎓</div>
-            <h3>Certificación</h3>
-            <p>Obtén un certificado digital al completar cada ruta de aprendizaje.</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">⏱️</div>
-            <h3>A tu ritmo</h3>
-            <p>Estudia cuando quieras, sin horarios fijos ni presión de clases en vivo.</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">🤝</div>
-            <h3>Comunidad activa</h3>
-            <p>Resuelve dudas y comparte proyectos con otros estudiantes del instituto.</p>
+          <div class="card">
+            <h3>Mi meta</h3>
+            <!-- Escribe una meta personal o profesional: -->
+            <p>Aprender a publicar mis propios proyectos en internet.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TESTIMONIOS -->
-    <section class="section" id="comunidad">
+    <!-- ============================================================
+         CAMBIA LA LISTA "Gustos" con tus intereses reales.
+         Cada <li> es un gusto. Agrega o quita los que quieras.
+         ============================================================ -->
+    <section class="section section-alt" id="gustos">
       <div class="container">
-        <div class="section-header">
-          <h2>Lo que dicen nuestros estudiantes</h2>
-        </div>
-
-        <div class="testimonials-grid" data-carousel>
-          <div class="carousel-track">
-            <div class="testimonial-card">
-              <div class="testimonial-stars">★★★★★</div>
-              <p class="testimonial-quote">"El curso de Frontend me ayudó a conseguir mi primera práctica pre-profesional."</p>
-              <div class="testimonial-author">
-                <img src="assets/img/instructor.jpg" alt="Foto de Ana Torres" width="48" height="48">
-                <div>
-                  <div class="name">Ana Torres</div>
-                  <div class="role">Estudiante de Sistemas, IIC</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="testimonial-stars">★★★★★</div>
-              <p class="testimonial-quote">"Los proyectos prácticos hicieron que por fin entendiera SQL de verdad."</p>
-              <div class="testimonial-author">
-                <img src="assets/img/instructor.jpg" alt="Foto de Luis Ramírez" width="48" height="48">
-                <div>
-                  <div class="name">Luis Ramírez</div>
-                  <div class="role">Estudiante de Computación, IIC</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="testimonial-stars">★★★★☆</div>
-              <p class="testimonial-quote">"Aprendí a usar Lighthouse y DevTools gracias al curso de rendimiento web."</p>
-              <div class="testimonial-author">
-                <img src="assets/img/instructor.jpg" alt="Foto de Marta Quispe" width="48" height="48">
-                <div>
-                  <div class="name">Marta Quispe</div>
-                  <div class="role">Estudiante de Sistemas, IIC</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RECURSOS GRATUITOS -->
-    <section class="section section-alt" id="recursos">
-      <div class="container">
-        <div class="section-header">
-          <h2>Recursos gratuitos</h2>
-          <p>Material de apoyo para complementar tu aprendizaje, sin costo.</p>
-        </div>
-
-        <ul class="resources-list">
-          <li class="resource-item" data-expandable>
-            <div class="resource-icon">PDF</div>
-            <div>
-              <h4>Guía de HTML y CSS desde cero</h4>
-              <p>Conceptos fundamentales para tu primera página web.</p>
-            </div>
-          </li>
-          <li class="resource-item" data-expandable>
-            <div class="resource-icon">▶</div>
-            <div>
-              <h4>Video: Introducción a Chrome DevTools</h4>
-              <p>Aprende a inspeccionar red, rendimiento y consola.</p>
-            </div>
-          </li>
-          <li class="resource-item" data-expandable>
-            <div class="resource-icon">PDF</div>
-            <div>
-              <h4>Checklist de rendimiento web</h4>
-              <p>Lista de verificación con LCP, INP, CLS y TTFB.</p>
-            </div>
-          </li>
-          <li class="resource-item" data-expandable>
-            <div class="resource-icon">🔗</div>
-            <div>
-              <h4>Repositorio de ejercicios en GitHub</h4>
-              <p>Practica con retos reales de optimización web.</p>
-            </div>
-          </li>
+        <h2>Mis gustos</h2>
+        <ul class="gustos-list">
+          <!-- Reemplaza cada <li> con un gusto tuyo: -->
+          <li>Programación</li>
+          <li>Música</li>
+          <li>Deportes</li>
+          <li>Lectura</li>
         </ul>
-      </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section class="section" id="contacto">
-      <div class="container">
-        <div class="section-header">
-          <h2>Contacto</h2>
-          <p>¿Tienes preguntas sobre nuestros cursos? Escríbenos.</p>
-        </div>
-
-        <form id="contact-form" style="max-width:520px;margin:0 auto;">
-          <div class="form-group" style="margin-bottom:16px;">
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" style="width:100%;padding:10px;">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label for="email">Correo</label>
-            <input type="email" id="email" name="email" style="width:100%;padding:10px;">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label for="message">Mensaje</label>
-            <textarea id="message" name="message" rows="4" style="width:100%;padding:10px;"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Enviar mensaje</button>
-          <p class="form-status" style="margin-top:12px;"></p>
-        </form>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-grid">
-        <div>
-          <img src="assets/img/logo.svg" alt="TechLearn" style="height:36px;filter:brightness(0) invert(1);margin-bottom:12px;">
-          <p>Recursos para aprender tecnología con proyectos reales. Proyecto educativo del IIC — Huánuco, Perú.</p>
-        </div>
-        <div>
-          <h4>Navegación</h4>
-          <ul>
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#cursos">Cursos</a></li>
-            <li><a href="#recursos">Recursos</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Comunidad</h4>
-          <ul>
-            <li><a href="#comunidad">Testimonios</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Instituto</h4>
-          <ul>
-            <li><a href="#">IIC Huánuco</a></li>
-            <li><a href="#">Sesión 6: Rendimiento Web</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; <span data-current-year></span> TechLearn — Proyecto educativo IIC. Todos los derechos reservados.</p>
-      </div>
+      <!-- ============================================================
+           Personaliza el footer con tu información.
+           ============================================================ -->
+      <p>© 2026 [TU NOMBRE AQUÍ] · Mi primera página web · Sesión 6 IIC</p>
     </div>
   </footer>
-
-  <button class="scroll-top-btn legacy-scroll-top" style="display:none;" aria-label="Volver arriba">↑</button>
-
-  <!-- PROBLEMA 3: más JS sin concatenar, cargado al final pero igual sin defer -->
-  <script src="assets/js/carousel.js"></script>
-  <script src="assets/js/chat.js"></script>
 </body>
 </html>

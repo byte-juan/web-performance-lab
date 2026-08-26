@@ -1,16 +1,15 @@
-# DOCENTE · Sesión 6 — Laboratorio de Rendimiento Web
+# DOCENTE · Sesión 6 — Tu primera página web
 
-> **Esta guía contiene la solución.** No compartir con los estudiantes.
+> **Esta guía es para el docente.**
 
 ---
 
 ## 🎯 Objetivo
 
-Que el estudiante aplique los conceptos de la Sesión 5 (LCP, INP, CLS, TTFB,
-DevTools, Lighthouse) a un sitio real, identificando problemas, proponiendo
-mejoras, comprobando resultados y documentando el proceso.
+Que el estudiante **publique su primera página web personal** en internet,
+usando git, gh CLI y GitHub Pages. La sesión es 80% práctica y 20% demostración.
 
-**Modalidad:** práctica de aprendizaje. NO es examen. No hay rúbrica con puntaje.
+**Modalidad:** práctica de aprendizaje. NO es examen. No hay rúbrica.
 
 ---
 
@@ -18,127 +17,145 @@ mejoras, comprobando resultados y documentando el proceso.
 
 ### Antes de clase
 
-1. Verificar que el sitio está desplegado:
-   `https://krizrome.github.io/web-performance-lab/`
-2. Tener el repo abierto en una pestaña:
-   `https://github.com/KrizRoMe/web-performance-lab/issues/new/choose`
+1. Verificar que el repo está desplegado y accesible:
+   - `https://krizrome.github.io/web-performance-lab/`
+2. El docente debe tener `gh auth status` activo.
 3. Los estudiantes deben tener cuenta de GitHub.
-4. Hoja de cálculo abierta para anotar métricas iniciales.
+4. Bloc de notas para cada estudiante (la actividad NO usa Issues).
+5. Proyector mostrando la URL en vivo.
 
-### Comandos para levantar localmente (respaldo)
+### URLs clave
+
+- **Repo del docente:** https://github.com/KrizRoMe/web-performance-lab
+- **Demo en vivo:** https://krizrome.github.io/web-performance-lab/
+- **Para los alumnos:** cada uno creará SU PROPIO repo con el mismo nombre
+
+### Comandos que el docente debe tener listos
 
 ```bash
-git clone https://github.com/KrizRoMe/web-performance-lab
+# 1. Clonar
+git clone https://github.com/KrizRoMe/web-performance-lab.git
 cd web-performance-lab
-python3 -m http.server 8080
-# http://localhost:8080
-```
 
-### URLs verificadas
+# 2. Modificar (el alumno edita con VS Code, nano, etc.)
+# Cambiar [TU NOMBRE AQUÍ] por su nombre real
 
-- **Repositorio:** https://github.com/KrizRoMe/web-performance-lab
-- **Demo Pages:** https://krizrome.github.io/web-performance-lab/
-- **Issue templates:** https://github.com/KrizRoMe/web-performance-lab/issues/new/choose
+# 3. Crear SU propio repo en github.com (interfaz web)
+# 4. Conectar el remote
+git remote add origin https://github.com/USUARIO/web-performance-lab.git
 
----
+# 5. Subir
+git add .
+git commit -m "feat: publicar mi primera página"
+git push -u origin main
 
-## 🔧 Comprobación del deployment
-
-```bash
-gh repo view KrizRoMe/web-performance-lab
-gh run list --limit 5
-gh run view --job deploy
-gh api repos/KrizRoMe/web-performance-lab/pages
+# 6. Activar Pages en Settings → Pages → branch: main, / (root)
+# Esperar 30-60 segundos
+# URL pública: https://USUARIO.github.io/web-performance-lab/
 ```
 
 ---
 
-## 🐛 Los 7 problemas intencionales
+## 🧑‍🏫 Flujo de la clase (90 minutos)
 
-| # | Problema | Archivo/Ubicación | Métrica que afecta |
-|---|---|---|---|
-| 1 | Imágenes sin comprimir (~3-5 MB) | `assets/img/*.jpg` | Total bytes, LCP |
-| 2 | JS bloqueante en `<head>` sin defer | `index.html` líneas 31-33 | FCP, LCP |
-| 3 | Múltiples JS no concatenados | `index.html` (4 `<script>`) | TTFB, requests |
-| 4 | Imágenes sin width/height | `index.html` (cards cursos) | CLS |
-| 5 | CSS no optimizado (50 KB sin minificar) | `assets/css/styles.css` | Total bytes |
-| 6 | Sin srcset / formato moderno | `index.html` (todas las `<img>`) | Total bytes |
-| 7 | @import de Google Fonts + preload de fuentes no usadas | `index.html` líneas 17-24 | Render-blocking, TTFB |
-
-Para respuestas detalladas (evidencia específica, causa, solución), ver
-`docs/solucion-docente.md`.
+| Min | Bloque | Actividad |
+|---|---|---|
+| 0-20 | Demo del docente | Abrir una página real, mostrar código fuente, DevTools, Network. Los alumnos observan y apuntan en su bloc. |
+| 20-35 | Práctica - clonar | `git clone` del repo del docente. Verificar que se descargó. |
+| 35-50 | Práctica - modificar | Editar `index.html` con su nombre. Cambiar `<title>`, `<h1>`, secciones "Sobre mí" y "Gustos". |
+| 50-65 | Práctica - publicar | Crear repo en github.com, conectar remote, `git push`. |
+| 65-80 | Práctica - Pages | Configurar GitHub Pages en Settings. Esperar 30-60s. Probar URL. |
+| 80-90 | Cierre | Compartir URLs entre todos. Reflexión: "tu nombre está en internet". |
 
 ---
 
-## 📚 Conceptos a vincular con la Sesión 5
-
-Cada hallazgo debería vincularse con al menos uno de estos conceptos:
-
-- **LCP** (Largest Contentful Paint)
-- **INP** (Interaction to Next Paint)
-- **CLS** (Cumulative Layout Shift)
-- **TTFB** (Time to First Byte)
-- **Critical rendering path**
-- **Render-blocking resources**
-- **Network waterfall**
-
----
-
-## ❓ Preguntas para discusión
-
-Durante la puesta en común:
-
-1. ¿Cuál problema afecta más al usuario en una conexión 3G?
-2. ¿Por qué el CSS debe estar en el `<head>` pero el JS no?
-3. ¿Qué pasa si solo optimizamos imágenes pero no concatenamos JS?
-4. ¿Por qué width/height ayuda aunque la imagen aún no haya cargado?
-5. ¿Cómo sabrías si una mejora realmente funcionó?
-
----
-
-## ✅ Lo que se espera del estudiante
+## 📋 Lo que se espera del estudiante
 
 Esta es una **práctica de aprendizaje**, no una evaluación con nota. Lo que se busca:
 
-1. **Identifica** al menos 5 problemas reales (de los 7 implementados).
-2. **Documenta** cada uno en un Issue con evidencia (captura, métrica).
-3. **Vincula** el problema con una métrica (LCP, CLS, total bytes, etc.).
-4. **Propone** soluciones razonables (no necesita ser perfecta).
-5. **Aplica** al menos 2-3 mejoras en el código del sitio.
-6. **Vuelve a medir** y compara antes/después.
-7. **Comunica** sus hallazgos en la puesta en común.
+1. Clona el repositorio correctamente.
+2. Modifica su HTML (título, encabezado, secciones).
+3. Crea su propio repositorio en github.com.
+4. Conecta el remote origin a SU repo.
+5. Hace push sin errores.
+6. Habilita GitHub Pages.
+7. Verifica que su página carga en internet con su nombre visible.
 
-No hay puntaje. La calidad se discute en clase.
-
----
-
-## 🔁 Verificación final
-
-Al terminar la sesión, el estudiante debe tener:
-
-- [ ] Sitio publicado en GitHub Pages (URL funcional)
-- [ ] Repositorio en GitHub con los cambios
-- [ ] Captura de Lighthouse inicial
-- [ ] Al menos 5 Issues documentados con la plantilla
-- [ ] Al menos 2 mejoras aplicadas en el código
-- [ ] Captura de Lighthouse después de las mejoras
-- [ ] Comparación antes/después anotada
+No hay puntaje. Lo importante es que su nombre quede en internet.
 
 ---
 
-## ⚠️ Posibles problemas durante la clase
+## 🔁 Estructura del proyecto para los alumnos
 
-1. **Estudiantes sin GitHub CLI instalado**: guiar con `gh auth login` o让他们 usar el repo manualmente.
-2. **No pueden clonar**: verificar que tienen acceso al repo público.
-3. **Lighthouse no aparece en DevTools**: actualizar Chrome a la última versión.
-4. **Páginas no se ven similares entre estudiantes**: recordar que la versión live es la referencia.
-5. **Cambios no se ven en Pages**: el workflow tarda 30-60s después del push.
+El repo `web-performance-lab` es ahora una **plantilla simple** que el alumno personaliza:
+
+```
+web-performance-lab/
+├── index.html              # Página principal con marcadores [TU NOMBRE AQUÍ]
+├── favicon.svg
+├── assets/
+│   └── css/
+│       └── styles.css      # Estilos simples
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # Para GitHub Pages
+├── DOCENTE.md
+└── README.md
+```
+
+Marcadores a personalizar en `index.html`:
+- `<title>...</title>` → "Mi primera página - [Nombre]"
+- `<h1>Hola, soy [TU NOMBRE AQUÍ]</h1>`
+- Sección "Sobre mí" → sus datos
+- Lista "Gustos" → sus intereses
+- Footer con su nombre
 
 ---
 
-## 🛡️ Recordatorio ético
+## 🔧 Resolución de problemas comunes
 
-Esta aplicación NO contiene vulnerabilidades reales. Los problemas son
-exclusivamente de **rendimiento y optimización**, no de seguridad ni privacidad.
-Si un estudiante reporta un problema de seguridad, explicar que esta es una
-práctica de rendimiento y redirigir el análisis a la capa de optimización.
+### 1. `git clone` falla con "Repository not found"
+- Verificar que la URL es correcta
+- Verificar que tienen acceso a internet
+
+### 2. `git push` pide usuario y contraseña pero falla
+- GitHub ya no acepta contraseñas. Necesitan un **Personal Access Token (PAT)**.
+- El docente debe mostrar cómo crearlo: Settings → Developer settings → Personal access tokens → Generate new token (classic) → seleccionar `repo` y `workflow` → Generate → copiar el token
+
+### 3. `git push` dice "remote: Permission denied"
+- El token no tiene permisos, o el repo no es suyo
+- Verificar que crearon SU propio repo
+
+### 4. GitHub Pages no aparece / dice "There is no Pages site here"
+- Verificar que la rama es `main` (no `master`)
+- Verificar que el folder es `/ (root)`
+- Esperar más tiempo (hasta 5 min la primera vez)
+
+### 5. La página carga pero sale 404
+- El `index.html` debe estar en la raíz del repo
+- Verificar que el push incluyó el archivo: `git ls-files`
+
+### 6. Conflict: "Updates were rejected because the tip of your current branch is behind"
+- El repo remoto tiene un commit que el local no (puede pasar si inicializaron con README)
+- Solución: `git pull origin main --rebase` y luego `git push`
+
+---
+
+## ✅ Verificación final
+
+Al terminar, el estudiante debe:
+
+- [ ] Tener un repo público en su cuenta con el nombre `web-performance-lab`
+- [ ] El `remote origin` apunta a SU repo (verificar con `git remote -v`)
+- [ ] El `index.html` tiene su nombre real
+- [ ] GitHub Pages está activo
+- [ ] La URL `https://USUARIO.github.io/web-performance-lab/` carga con su página
+
+---
+
+## 🛡️ Notas
+
+- Esta sesión es de **publicación**, no de auditoría ni Issues.
+- Los Issues NO son parte de la entrega.
+- El bloc de notas sí es parte de la entrega (lo que apuntó durante la demo).
+- La práctica es exitosa cuando el estudiante ve su nombre en internet.

@@ -1,81 +1,123 @@
-# Solución Docente — Problemas Intencionales en TechLearn
+# Solución Docente — Sesión 6: Publicación de la primera página
 
-> **Esta es la respuesta oficial.** Documenta los 7 problemas implementados
-> para que el docente pueda verificar los hallazgos de los estudiantes.
-
----
-
-## Problema 1 — Imágenes sin comprimir
-
-- **Hallazgo:** JPGs de 3-5 MB cada una.
-- **Ubicación:** `assets/img/course-1.jpg` a `course-6.jpg` (2.9 MB c/u), `hero-bg.jpg` (4.6 MB), `hero-bg-2.jpg` (3.9 MB), `instructor.jpg` (3.3 MB).
-- **Evidencia:** Pestaña Network en DevTools muestra el tamaño de cada transferencia. Lighthouse marca "Properly size images" y "Efficiently encode images" como oportunidades.
-- **Métrica afectada:** **Total bytes transferidos** (el sitio pesa >25 MB), **LCP** (la imagen del hero tarda en cargar), **TTFB** se ve afectado por el ancho de banda.
-- **Causa:** Imágenes generadas con Pillow sin compresión (`quality=95`), resolución 3000x2000 sin optimización.
-- **Solución:** Comprimir las imágenes (quality 75-85), convertir a WebP (`cwebp -q 80 input.jpg -o output.webp`), reducir resolución a 1200x800, usar responsive images con `srcset`.
+> Documento de referencia para el docente. No compartir con los estudiantes.
 
 ---
 
-## #2 — JavaScript bloqueante
+## Comandos exactos que el docente debe mostrar
 
-- **Hallazgo:** Los `<script>` están en el `<head>` sin `defer` ni `async`.
-- **Ubicación:** `index.html` líneas 31-33.
-- **Evidencia:** En Network, los JS se cargan ANTES de que se renderice el body. Lighthouse marca "Render-blocking resources".
-- **Métrica afectada:** **FCP** (First Contentful Paint), **LCP**, **TTFB** se ve forzado a esperar.
-- **Causa:** HTML parser encuentra `<script src>` y bloquea hasta descargar y ejecutar.
-- **Solución:** Agregar `defer` a todos los scripts del head (`<script src="..." defer></script>`). `defer` permite que el HTML se siga parseando mientras el JS descarga, ejecutándose antes del `DOMContentLoaded`.
+### Paso 1: Clonar
+```bash
+git clone https://github.com/KrizRoMe/web-performance-lab.git
+cd web-performance-lab
+```
+
+Verificar con:
+```bash
+ls
+# Debe verse: index.html, favicon.svg, assets/, .github/, etc.
+```
+
+### Paso 2: Modificar
+Editar `index.html` con VS Code, nano, o cualquier editor:
+
+```bash
+# Opción con VS Code (si está instalado)
+code index.html
+
+# Opción con nano
+nano index.html
+```
+
+Buscar y reemplazar:
+- `<title>Mi primera página — Sesión 6 IIC</title>` → `<title>Mi primera página - [Nombre]</title>`
+- `<h1>Hola, soy [TU NOMBRE AQUÍ]</h1>` → `<h1>Hola, soy [Nombre Real]</h1>`
+- Sección "Sobre mí" → información real
+- Lista "Gustos" → gustos reales
+- Footer → nombre y año
+
+### Paso 3: Crear repo en github.com (UI)
+
+1. Abrir https://github.com/new
+2. Repository name: `web-performance-lab`
+3. Description: "Mi primera página web" (opcional)
+4. Visibility: **Public** ⚠️
+5. NO marcar "Add a README file"
+6. Click "Create repository"
+7. **Copiar la URL HTTPS** que muestra (ej: `https://github.com/juan-perez/web-performance-lab.git`)
+
+### Paso 4: Conectar remote
+```bash
+git remote add origin https://github.com/TU-USUARIO/web-performance-lab.git
+git remote -v
+# Debe mostrar:
+# origin  https://github.com/juan-perez/web-performance-lab.git (fetch)
+# origin  https://github.com/juan-perez/web-performance-lab.git (push)
+```
+
+### Paso 5: Primer push
+```bash
+git add .
+git status
+# Debe mostrar los archivos modificados en verde
+
+git commit -m "feat: publicar mi primera página"
+git push -u origin main
+```
+
+> Si pide username y password:
+> - Username: su-usuario-de-github
+> - Password: su **Personal Access Token** (NO la contraseña)
+
+**Cómo crear un Personal Access Token** (mostrar al alumno si no tiene):
+1. https://github.com/settings/tokens
+2. "Generate new token" → "Generate new token (classic)"
+3. Note: "Sesion 6 Admin Web"
+4. Expiration: 30 days (o lo que el docente indique)
+5. Scopes: marcar `repo` (todo) y `workflow`
+6. "Generate token"
+7. **Copiar el token inmediatamente** (no se vuelve a mostrar)
+
+### Paso 6: Activar GitHub Pages
+
+1. En el repo → tab **Settings**
+2. Menú lateral → **Pages**
+3. Source: **"Deploy from a branch"**
+4. Branch: **main** · Folder: **/ (root)**
+5. Click **Save**
+6. Esperar 30-60 segundos
+7. Aparece un banner: "Your site is live at https://USUARIO.github.io/web-performance-lab/"
+8. Click en la URL → debería verse la página con el nombre del alumno
 
 ---
 
-## #3 — Múltiples archivos JS no concatenados
+## Errores comunes y soluciones
 
-- **Hallazgo:** 4 archivos JS separados.
-- **Ubicación:** `index.html` (4 tags `<script>`), `assets/js/app.js` (6.5 KB), `analytics.js` (32 KB), `chat.js` (43 KB), `carousel.js` (45 KB).
-- **Evidencia:** Pestaña Network muestra 4 requests adicionales para JS. Lighthouse marca "Reduce unused JavaScript" y "Avoid enormous network payloads".
-- **Métrica afectada:** **Número de requests**, **Total bytes**, **TTFB** acumulado.
-- **Causa:** Cada `<script>` es una solicitud HTTP separada, cada una con su propio handshake TLS y tiempo de transferencia.
-- **Solución:** Concatenar los 4 archivos en uno solo (`bundle.js`), o usar un bundler como esbuild/Vite, o al menos mover los scripts al final del `<body>`.
-
----
-
-## #4 — Imágenes sin width/height
-
-- **Hallazgo:** Las imágenes de los cursos no tienen atributos width/height.
-- **Ubicación:** `index.html` en las cards de cursos, `hero-bg-2.jpg`.
-- **Evidencia:** Lighthouse marca "Image elements without explicit width/height" como oportunidad. Visualmente se nota que el contenido salta cuando cargan las imágenes.
-- **Métrica afectada:** **CLS** (Cumulative Layout Shift).
-- **Causa:** Sin reservar espacio, el navegador no sabe cuánto ocupará la imagen y reorganiza el layout cuando llega.
-- **Solución:** Agregar `width="400" height="250"` a cada `<img>`, o usar CSS con `aspect-ratio: 16/10` y `width: 100%`.
+| Error | Causa | Solución |
+|---|---|---|
+| `git clone` falla con "Repository not found" | URL mal escrita o sin internet | Verificar URL, probar con `curl github.com` |
+| `git push` pide password normal | GitHub ya no acepta contraseñas | Crear Personal Access Token (ver paso 5) |
+| `git push` dice "remote: Permission denied" | Token sin permisos o repo no es del alumno | Verificar scope `repo` en el token; verificar que el repo es de su cuenta |
+| `git push` dice "Updates were rejected" | El repo remoto tiene commits que el local no | `git pull origin main --rebase` y luego `git push` |
+| GitHub Pages dice "There is no Pages site here" | La rama o folder están mal | Settings → Pages → branch: main, folder: / (root) |
+| La página carga pero da 404 | `index.html` no está en la raíz | Verificar `git ls-files` incluya `index.html` |
+| La página carga pero el alumno no ve sus cambios | Caché del navegador | Forzar recarga con Ctrl+Shift+R |
 
 ---
 
-## #5 — CSS no optimizado
+## Lista de verificación al final
 
-- **Hallazgo:** Archivo CSS de ~50 KB sin minificar.
-- **Ubicación:** `assets/css/styles.css` (49,833 bytes).
-- **Evidencia:** Lighthouse marca "Reduce unused CSS" y "Minify CSS". Pestaña Network muestra el tamaño.
-- **Métrica afectada:** **Total bytes transferidos**, **FCP** (CSS bloquea el primer render).
-- **Causa:** CSS con selectores no usados (ej: `.legacy-utility-*`, clases deprecadas), comentarios, espacios en blanco.
-- **Solución:** Minificar con `csso` o `clean-css-cli`, eliminar selectores no usados con PurgeCSS, dividir CSS crítico del resto.
-
----
-
-## #6 — Sin responsive images / sin formato moderno
-
-- **Hallazgo:** Las imágenes JPG se sirven a TODOS los dispositivos, incluido móvil con conexión lenta.
-- **Ubicación:** Todas las `<img>` del sitio.
-- **Evidencia:** Network muestra la misma imagen pesada servida a mobile (375px de ancho). Lighthouse marca "Serve images in next-gen formats" y "Properly size images".
-- **Métrica afectada:** **Total bytes** (móvil descarga lo mismo que desktop), **LCP** (imagen tarda más en llegar).
-- **Causa:** No se usa `<picture>` ni `srcset`, formato JPG pesado.
-- **Solución:** Usar `<picture>` con `<source srcset="..." media="..." type="image/webp">` y fallback JPG. Generar versiones en 400w, 800w, 1200w.
+- [ ] El repo es público
+- [ ] El `git remote -v` apunta a SU cuenta
+- [ ] El `index.html` tiene su nombre real
+- [ ] El workflow de GitHub Actions terminó con éxito
+- [ ] La URL pública carga y muestra su nombre
 
 ---
 
-## #7 — Carga ineficiente de fuentes
+## Notas pedagógicas
 
-- **Hallazgo:** Dos problemas combinados.
-- **Ubicación:** `index.html` líneas 17-24.
-- **Evidencia:** Network muestra `@import` de Google Fonts (CSS adicional que bloquea), preload de `opensans-regular.woff2` y `montserrat-bold.woff2` que NO se usan en el sitio (solo se usa Roboto).
-- **Métrica afectada:** **Render-blocking** (el `@import` bloquea el render hasta cargar el CSS remoto), **Total bytes** (descarga fuentes innecesarias), **TTFB** (depende de Google Fonts).
-- **Causa:** Decisiones de diseño inconsistentes: se importan Poppins de Google, se precargan 2 fuentes locales no usadas, y el sitio usa Roboto de otra fuente.
-- **Solución:** Eliminar el `@import` y usar solo fuentes locales (`@font-face` con `font-display: swap`), eliminar los `<link rel="preload">` de fuentes no usadas, asegurar coherencia entre lo que se declara y lo que se usa.
+- La práctica es **exitosa** cuando el estudiante ve su nombre en internet. No medir nada más.
+- Los errores con el token PAT son la causa #1 de fricción. Tener un tutorial impreso o impreso en pizarra.
+- Si un estudiante no puede hacer push por credenciales, depurar antes de seguir. No avanzar al Pages sin push exitoso.
+- El docente debe **abrir su propia página** primero para mostrar a los alumnos que funciona.
